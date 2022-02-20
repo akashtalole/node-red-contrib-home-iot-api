@@ -1,0 +1,44 @@
+{
+    "HomeIotApi": {
+        "label": {
+            "service": "サービス",
+            "method": "メソッド",
+            "host": "ホスト",
+            "header": "ヘッダ",
+            "value": "値",
+            "isQuery": "クエリ"
+        },
+        "status": {
+            "requesting": "要求中"
+        },
+        "parameters": {
+            "getDevices": "GET /devices",
+            "skip": "skip",
+            "limit": "limit",
+            "register": "POST /devices",
+            "device": "device",
+            "setDimmer": "POST /lighting/dimmers/{deviceId}/{value}",
+            "deviceId": "deviceId",
+            "value": "value",
+            "setDimmerTimer": "POST /lighting/dimmers/{deviceId}/{value}/timer/{timeunit}",
+            "timeunit": "timeunit",
+            "units": "units",
+            "getSwitchState": "GET /lighting/switches/{deviceId}",
+            "setSwitch": "POST /lighting/switches/{deviceId}/{value}",
+            "setSwitchTimer": "POST /lighting/switches/{deviceId}/{value}/timer/{minutes}",
+            "minutes": "minutes",
+            "getLightingSummary": "GET /lightingSummary",
+            "temperatureSummary": "GET /temperature",
+            "getForecast": "GET /temperature/forecast/{days}",
+            "days": "days",
+            "getZoneTemperature": "GET /temperature/{zoneId}",
+            "zoneId": "zoneId",
+            "getHeaterState": "GET /temperature/{zoneId}/heater",
+            "setHeaterState": "POST /temperature/{zoneId}/heater/{state}",
+            "state": "state",
+            "getZones": "GET /zones",
+            "quietZone": "GET /zones/{zoneId}/quiet",
+            "optionalParameters": "任意項目"
+        }
+    }
+}

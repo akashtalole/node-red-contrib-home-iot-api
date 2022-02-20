@@ -1,0 +1,760 @@
+<script type="text/javascript">
+    RED.nodes.registerType('home-iot-api', {
+        category: 'function',
+        color: '#89bf04',
+        defaults: {
+            method: { value: "", required: true },
+            getDevices_skip: { value: "" },
+            getDevices_skipType: { value: "str" },
+            getDevices_limit: { value: "" },
+            getDevices_limitType: { value: "str" },
+            register_device: { value: "" },
+            register_deviceType: { value: "str" },
+            setDimmer_deviceId: { value: "" },
+            setDimmer_deviceIdType: { value: "str" },
+            setDimmer_value: { value: "" },
+            setDimmer_valueType: { value: "str" },
+            setDimmerTimer_deviceId: { value: "" },
+            setDimmerTimer_deviceIdType: { value: "str" },
+            setDimmerTimer_value: { value: "" },
+            setDimmerTimer_valueType: { value: "str" },
+            setDimmerTimer_timeunit: { value: "" },
+            setDimmerTimer_timeunitType: { value: "str" },
+            setDimmerTimer_units: { value: "" },
+            setDimmerTimer_unitsType: { value: "str" },
+            getSwitchState_deviceId: { value: "" },
+            getSwitchState_deviceIdType: { value: "str" },
+            setSwitch_deviceId: { value: "" },
+            setSwitch_deviceIdType: { value: "str" },
+            setSwitch_value: { value: "" },
+            setSwitch_valueType: { value: "str" },
+            setSwitchTimer_deviceId: { value: "" },
+            setSwitchTimer_deviceIdType: { value: "str" },
+            setSwitchTimer_value: { value: "" },
+            setSwitchTimer_valueType: { value: "str" },
+            setSwitchTimer_minutes: { value: "" },
+            setSwitchTimer_minutesType: { value: "str" },
+            getForecast_days: { value: "" },
+            getForecast_daysType: { value: "str" },
+            getZoneTemperature_zoneId: { value: "" },
+            getZoneTemperature_zoneIdType: { value: "str" },
+            getHeaterState_zoneId: { value: "" },
+            getHeaterState_zoneIdType: { value: "str" },
+            setHeaterState_zoneId: { value: "" },
+            setHeaterState_zoneIdType: { value: "str" },
+            setHeaterState_state: { value: "" },
+            setHeaterState_stateType: { value: "str" },
+            quietZone_zoneId: { value: "" },
+            quietZone_zoneIdType: { value: "str" },
+            name: { value: "" }
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: 'icon.png',
+        label: function () {
+            return this.name || this.method || "home-iot-api";
+        },
+        labelStyle: function() {
+            return this.name?"node_label_italic":"";
+        },
+        oneditprepare: function () {
+            var selectedMethod = $('#node-input-method option:selected');
+            if (!selectedMethod.val()) {
+                var methods = $('#node-input-method').children();
+                var firstMethod = methods.first();
+                $('#node-input-method').val(firstMethod.val());
+            }
+
+            var showParameters = function () {
+
+                $("#node-input-getDevices_skip").typedInput({
+                    default: 'str',
+                    typeField: $("#node-input-getDevices_skipType"),
+                    types: ['str', 'msg']
+                });
+
+                $("#getDevices_skip").hide();
+
+                $("#node-input-getDevices_limit").typedInput({
+                    default: 'str',
+                    typeField: $("#node-input-getDevices_limitType"),
+                    types: ['str', 'msg']
+                });
+
+                $("#getDevices_limit").hide();
+
+                $("#node-input-register_device").typedInput({
+                    default: 'str',
+                    typeField: $("#node-input-register_deviceType"),
+                    types: ['str', 'msg']
+                });
+
+                $("#register_device").hide();
+
+                $("#node-input-setDimmer_deviceId").typedInput({
+                    default: 'str',
+                    typeField: $("#node-input-setDimmer_deviceIdType"),
+                    types: ['str', 'msg']
+                });
+
+                $("#setDimmer_deviceId").hide();
+
+                $("#node-input-setDimmer_value").typedInput({
+                    default: 'str',
+                    typeField: $("#node-input-setDimmer_valueType"),
+                    types: ['str', 'msg']
+                });
+
+                $("#setDimmer_value").hide();
+
+                $("#node-input-setDimmerTimer_deviceId").typedInput({
+                    default: 'str',
+                    typeField: $("#node-input-setDimmerTimer_deviceIdType"),
+                    types: ['str', 'msg']
+                });
+
+                $("#setDimmerTimer_deviceId").hide();
+
+                $("#node-input-setDimmerTimer_value").typedInput({
+                    default: 'str',
+                    typeField: $("#node-input-setDimmerTimer_valueType"),
+                    types: ['str', 'msg']
+                });
+
+                $("#setDimmerTimer_value").hide();
+
+                $("#node-input-setDimmerTimer_timeunit").typedInput({
+                    default: 'str',
+                    typeField: $("#node-input-setDimmerTimer_timeunitType"),
+                    types: ['str', 'msg']
+                });
+
+                $("#setDimmerTimer_timeunit").hide();
+
+
+                $("#setDimmerTimer_units").hide();
+
+                $("#node-input-getSwitchState_deviceId").typedInput({
+                    default: 'str',
+                    typeField: $("#node-input-getSwitchState_deviceIdType"),
+                    types: ['str', 'msg']
+                });
+
+                $("#getSwitchState_deviceId").hide();
+
+                $("#node-input-setSwitch_deviceId").typedInput({
+                    default: 'str',
+                    typeField: $("#node-input-setSwitch_deviceIdType"),
+                    types: ['str', 'msg']
+                });
+
+                $("#setSwitch_deviceId").hide();
+
+
+                $("#setSwitch_value").hide();
+
+                $("#node-input-setSwitchTimer_deviceId").typedInput({
+                    default: 'str',
+                    typeField: $("#node-input-setSwitchTimer_deviceIdType"),
+                    types: ['str', 'msg']
+                });
+
+                $("#setSwitchTimer_deviceId").hide();
+
+
+                $("#setSwitchTimer_value").hide();
+
+                $("#node-input-setSwitchTimer_minutes").typedInput({
+                    default: 'str',
+                    typeField: $("#node-input-setSwitchTimer_minutesType"),
+                    types: ['str', 'msg']
+                });
+
+                $("#setSwitchTimer_minutes").hide();
+
+                $("#node-input-getForecast_days").typedInput({
+                    default: 'str',
+                    typeField: $("#node-input-getForecast_daysType"),
+                    types: ['str', 'msg']
+                });
+
+                $("#getForecast_days").hide();
+
+                $("#node-input-getZoneTemperature_zoneId").typedInput({
+                    default: 'str',
+                    typeField: $("#node-input-getZoneTemperature_zoneIdType"),
+                    types: ['str', 'msg']
+                });
+
+                $("#getZoneTemperature_zoneId").hide();
+
+                $("#node-input-getHeaterState_zoneId").typedInput({
+                    default: 'str',
+                    typeField: $("#node-input-getHeaterState_zoneIdType"),
+                    types: ['str', 'msg']
+                });
+
+                $("#getHeaterState_zoneId").hide();
+
+                $("#node-input-setHeaterState_zoneId").typedInput({
+                    default: 'str',
+                    typeField: $("#node-input-setHeaterState_zoneIdType"),
+                    types: ['str', 'msg']
+                });
+
+                $("#setHeaterState_zoneId").hide();
+
+
+                $("#setHeaterState_state").hide();
+
+
+                $("#quietZone_zoneId").hide();
+
+                $("#optional-parameters").hide();
+                $("#optional-parameters-label").hide();
+                if ($("#node-input-method").val() === 'getDevices') {
+
+                    $("#optional-parameters").show();
+                    $("#optional-parameters-label").show();
+                    
+                }
+                if ($("#node-input-method").val() === 'register') {
+
+                    $("#optional-parameters").show();
+                    $("#optional-parameters-label").show();
+                    
+                }
+                if ($("#node-input-method").val() === 'setDimmer') {
+
+                }
+                if ($("#node-input-method").val() === 'setDimmerTimer') {
+
+                    $("#optional-parameters").show();
+                    $("#optional-parameters-label").show();
+                    
+                }
+                if ($("#node-input-method").val() === 'getSwitchState') {
+
+                }
+                if ($("#node-input-method").val() === 'setSwitch') {
+
+                }
+                if ($("#node-input-method").val() === 'setSwitchTimer') {
+
+                }
+                if ($("#node-input-method").val() === 'getLightingSummary') {
+
+                }
+                if ($("#node-input-method").val() === 'temperatureSummary') {
+
+                }
+                if ($("#node-input-method").val() === 'getForecast') {
+
+                }
+                if ($("#node-input-method").val() === 'getZoneTemperature') {
+
+                }
+                if ($("#node-input-method").val() === 'getHeaterState') {
+
+                }
+                if ($("#node-input-method").val() === 'setHeaterState') {
+
+                }
+                if ($("#node-input-method").val() === 'getZones') {
+
+                }
+                if ($("#node-input-method").val() === 'quietZone') {
+
+                }
+
+                if ($("#optional-parameters").prop('checked')) {
+                    if ($("#node-input-method").val() === 'getDevices') {
+
+                        $("#getDevices_skip").show();
+                        
+                        $("#getDevices_limit").show();
+                        
+                    }
+                    if ($("#node-input-method").val() === 'register') {
+
+                        $("#register_device").show();
+                        
+                    }
+                    if ($("#node-input-method").val() === 'setDimmer') {
+
+                        $("#setDimmer_deviceId").show();
+                        
+                        $("#setDimmer_value").show();
+                        
+                    }
+                    if ($("#node-input-method").val() === 'setDimmerTimer') {
+
+                        $("#setDimmerTimer_deviceId").show();
+                        
+                        $("#setDimmerTimer_value").show();
+                        
+                        $("#setDimmerTimer_timeunit").show();
+                        
+                        $("#setDimmerTimer_units").show();
+                        
+                    }
+                    if ($("#node-input-method").val() === 'getSwitchState') {
+
+                        $("#getSwitchState_deviceId").show();
+                        
+                    }
+                    if ($("#node-input-method").val() === 'setSwitch') {
+
+                        $("#setSwitch_deviceId").show();
+                        
+                        $("#setSwitch_value").show();
+                        
+                    }
+                    if ($("#node-input-method").val() === 'setSwitchTimer') {
+
+                        $("#setSwitchTimer_deviceId").show();
+                        
+                        $("#setSwitchTimer_value").show();
+                        
+                        $("#setSwitchTimer_minutes").show();
+                        
+                    }
+                    if ($("#node-input-method").val() === 'getLightingSummary') {
+
+                    }
+                    if ($("#node-input-method").val() === 'temperatureSummary') {
+
+                    }
+                    if ($("#node-input-method").val() === 'getForecast') {
+
+                        $("#getForecast_days").show();
+                        
+                    }
+                    if ($("#node-input-method").val() === 'getZoneTemperature') {
+
+                        $("#getZoneTemperature_zoneId").show();
+                        
+                    }
+                    if ($("#node-input-method").val() === 'getHeaterState') {
+
+                        $("#getHeaterState_zoneId").show();
+                        
+                    }
+                    if ($("#node-input-method").val() === 'setHeaterState') {
+
+                        $("#setHeaterState_zoneId").show();
+                        
+                        $("#setHeaterState_state").show();
+                        
+                    }
+                    if ($("#node-input-method").val() === 'getZones') {
+
+                    }
+                    if ($("#node-input-method").val() === 'quietZone') {
+
+                        $("#quietZone_zoneId").show();
+                        
+                    }
+                } else {
+                    if ($("#node-input-method").val() === 'getDevices') {
+
+                    }
+                    if ($("#node-input-method").val() === 'register') {
+
+                    }
+                    if ($("#node-input-method").val() === 'setDimmer') {
+
+                        $("#setDimmer_deviceId").show();
+                        
+                        $("#setDimmer_value").show();
+                        
+                    }
+                    if ($("#node-input-method").val() === 'setDimmerTimer') {
+
+                        $("#setDimmerTimer_deviceId").show();
+                        
+                        $("#setDimmerTimer_value").show();
+                        
+                        $("#setDimmerTimer_timeunit").show();
+                        
+                    }
+                    if ($("#node-input-method").val() === 'getSwitchState') {
+
+                        $("#getSwitchState_deviceId").show();
+                        
+                    }
+                    if ($("#node-input-method").val() === 'setSwitch') {
+
+                        $("#setSwitch_deviceId").show();
+                        
+                        $("#setSwitch_value").show();
+                        
+                    }
+                    if ($("#node-input-method").val() === 'setSwitchTimer') {
+
+                        $("#setSwitchTimer_deviceId").show();
+                        
+                        $("#setSwitchTimer_value").show();
+                        
+                        $("#setSwitchTimer_minutes").show();
+                        
+                    }
+                    if ($("#node-input-method").val() === 'getLightingSummary') {
+
+                    }
+                    if ($("#node-input-method").val() === 'temperatureSummary') {
+
+                    }
+                    if ($("#node-input-method").val() === 'getForecast') {
+
+                        $("#getForecast_days").show();
+                        
+                    }
+                    if ($("#node-input-method").val() === 'getZoneTemperature') {
+
+                        $("#getZoneTemperature_zoneId").show();
+                        
+                    }
+                    if ($("#node-input-method").val() === 'getHeaterState') {
+
+                        $("#getHeaterState_zoneId").show();
+                        
+                    }
+                    if ($("#node-input-method").val() === 'setHeaterState') {
+
+                        $("#setHeaterState_zoneId").show();
+                        
+                        $("#setHeaterState_state").show();
+                        
+                    }
+                    if ($("#node-input-method").val() === 'getZones') {
+
+                    }
+                    if ($("#node-input-method").val() === 'quietZone') {
+
+                        $("#quietZone_zoneId").show();
+                        
+                    }
+                }
+            };
+
+            $("#node-input-method").change(function () {
+                showParameters();
+            });
+
+            $("#optional-parameters").change(function () {
+                showParameters();
+            });
+
+            var selected_setDimmerTimer_units = $('#node-input-setDimmerTimer_units option:selected');
+            if (!selected_setDimmerTimer_units.val()) {
+                var children_setDimmerTimer_units = $('#node-input-setDimmerTimer_units').children();
+                var first_setDimmerTimer_units = children_setDimmerTimer_units.first();
+                $('#node-input-setDimmerTimer_units').val(first_setDimmerTimer_units.val());
+            }
+            var selected_setSwitch_value = $('#node-input-setSwitch_value option:selected');
+            if (!selected_setSwitch_value.val()) {
+                var children_setSwitch_value = $('#node-input-setSwitch_value').children();
+                var first_setSwitch_value = children_setSwitch_value.first();
+                $('#node-input-setSwitch_value').val(first_setSwitch_value.val());
+            }
+            var selected_setSwitchTimer_value = $('#node-input-setSwitchTimer_value option:selected');
+            if (!selected_setSwitchTimer_value.val()) {
+                var children_setSwitchTimer_value = $('#node-input-setSwitchTimer_value').children();
+                var first_setSwitchTimer_value = children_setSwitchTimer_value.first();
+                $('#node-input-setSwitchTimer_value').val(first_setSwitchTimer_value.val());
+            }
+            var selected_setHeaterState_state = $('#node-input-setHeaterState_state option:selected');
+            if (!selected_setHeaterState_state.val()) {
+                var children_setHeaterState_state = $('#node-input-setHeaterState_state').children();
+                var first_setHeaterState_state = children_setHeaterState_state.first();
+                $('#node-input-setHeaterState_state').val(first_setHeaterState_state.val());
+            }
+            var selected_quietZone_zoneId = $('#node-input-quietZone_zoneId option:selected');
+            if (!selected_quietZone_zoneId.val()) {
+                var children_quietZone_zoneId = $('#node-input-quietZone_zoneId').children();
+                var first_quietZone_zoneId = children_quietZone_zoneId.first();
+                $('#node-input-quietZone_zoneId').val(first_quietZone_zoneId.val());
+            }
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="home-iot-api">
+
+    <div class="form-row">
+        <label for="node-input-method"><i class="fa fa-tasks"></i> <span data-i18n="HomeIotApi.label.method"></span></label>
+        <select id="node-input-method">
+            <option value="getDevices" data-i18n="HomeIotApi.parameters.getDevices"></option>
+            <option value="register" data-i18n="HomeIotApi.parameters.register"></option>
+            <option value="setDimmer" data-i18n="HomeIotApi.parameters.setDimmer"></option>
+            <option value="setDimmerTimer" data-i18n="HomeIotApi.parameters.setDimmerTimer"></option>
+            <option value="getSwitchState" data-i18n="HomeIotApi.parameters.getSwitchState"></option>
+            <option value="setSwitch" data-i18n="HomeIotApi.parameters.setSwitch"></option>
+            <option value="setSwitchTimer" data-i18n="HomeIotApi.parameters.setSwitchTimer"></option>
+            <option value="getLightingSummary" data-i18n="HomeIotApi.parameters.getLightingSummary"></option>
+            <option value="temperatureSummary" data-i18n="HomeIotApi.parameters.temperatureSummary"></option>
+            <option value="getForecast" data-i18n="HomeIotApi.parameters.getForecast"></option>
+            <option value="getZoneTemperature" data-i18n="HomeIotApi.parameters.getZoneTemperature"></option>
+            <option value="getHeaterState" data-i18n="HomeIotApi.parameters.getHeaterState"></option>
+            <option value="setHeaterState" data-i18n="HomeIotApi.parameters.setHeaterState"></option>
+            <option value="getZones" data-i18n="HomeIotApi.parameters.getZones"></option>
+            <option value="quietZone" data-i18n="HomeIotApi.parameters.quietZone"></option>
+        </select>
+        &nbsp;
+        <input type="checkbox" id="optional-parameters" style="margin-left: 10px; vertical-align: text-bottom; width: auto;">
+        <label for="optional-parameters" id="optional-parameters-label" style="width: auto;"> <span data-i18n="HomeIotApi.parameters.optionalParameters"></span></label>
+    </div>
+
+    <div class="form-row" id="getDevices_skip">
+        <label for="node-input-getDevices_skip"><i class="fa fa-list"></i> <span data-i18n="HomeIotApi.parameters.skip"></span></label>
+
+        <input type="text" id="node-input-getDevices_skip" placeholder="number of records to skip" style="width:70%">
+        <input type="hidden" id="node-input-getDevices_skipType">
+    </div>
+
+    <div class="form-row" id="getDevices_limit">
+        <label for="node-input-getDevices_limit"><i class="fa fa-list"></i> <span data-i18n="HomeIotApi.parameters.limit"></span></label>
+
+        <input type="text" id="node-input-getDevices_limit" placeholder="max number of records to return" style="width:70%">
+        <input type="hidden" id="node-input-getDevices_limitType">
+    </div>
+
+    <div class="form-row" id="register_device">
+        <label for="node-input-register_device"><i class="fa fa-list"></i> <span data-i18n="HomeIotApi.parameters.device"></span></label>
+
+        <input type="text" id="node-input-register_device" placeholder="" style="width:70%">
+        <input type="hidden" id="node-input-register_deviceType">
+    </div>
+
+    <div class="form-row" id="setDimmer_deviceId">
+        <label for="node-input-setDimmer_deviceId"><i class="fa fa-list"></i> <span data-i18n="HomeIotApi.parameters.deviceId"></span></label>
+
+        <input type="text" id="node-input-setDimmer_deviceId" placeholder="" style="width:70%">
+        <input type="hidden" id="node-input-setDimmer_deviceIdType">
+    </div>
+
+    <div class="form-row" id="setDimmer_value">
+        <label for="node-input-setDimmer_value"><i class="fa fa-list"></i> <span data-i18n="HomeIotApi.parameters.value"></span></label>
+
+        <input type="text" id="node-input-setDimmer_value" placeholder="" style="width:70%">
+        <input type="hidden" id="node-input-setDimmer_valueType">
+    </div>
+
+    <div class="form-row" id="setDimmerTimer_deviceId">
+        <label for="node-input-setDimmerTimer_deviceId"><i class="fa fa-list"></i> <span data-i18n="HomeIotApi.parameters.deviceId"></span></label>
+
+        <input type="text" id="node-input-setDimmerTimer_deviceId" placeholder="" style="width:70%">
+        <input type="hidden" id="node-input-setDimmerTimer_deviceIdType">
+    </div>
+
+    <div class="form-row" id="setDimmerTimer_value">
+        <label for="node-input-setDimmerTimer_value"><i class="fa fa-list"></i> <span data-i18n="HomeIotApi.parameters.value"></span></label>
+
+        <input type="text" id="node-input-setDimmerTimer_value" placeholder="" style="width:70%">
+        <input type="hidden" id="node-input-setDimmerTimer_valueType">
+    </div>
+
+    <div class="form-row" id="setDimmerTimer_timeunit">
+        <label for="node-input-setDimmerTimer_timeunit"><i class="fa fa-list"></i> <span data-i18n="HomeIotApi.parameters.timeunit"></span></label>
+
+        <input type="text" id="node-input-setDimmerTimer_timeunit" placeholder="" style="width:70%">
+        <input type="hidden" id="node-input-setDimmerTimer_timeunitType">
+    </div>
+
+    <div class="form-row" id="setDimmerTimer_units">
+        <label for="node-input-setDimmerTimer_units"><i class="fa fa-list"></i> <span data-i18n="HomeIotApi.parameters.units"></span></label>
+        <select id="node-input-setDimmerTimer_units">
+            <option value="seconds">seconds</option>
+            <option value="minutes">minutes</option>
+            <option value="milliseconds">milliseconds</option>
+        </select>
+
+    </div>
+
+    <div class="form-row" id="getSwitchState_deviceId">
+        <label for="node-input-getSwitchState_deviceId"><i class="fa fa-list"></i> <span data-i18n="HomeIotApi.parameters.deviceId"></span></label>
+
+        <input type="text" id="node-input-getSwitchState_deviceId" placeholder="" style="width:70%">
+        <input type="hidden" id="node-input-getSwitchState_deviceIdType">
+    </div>
+
+    <div class="form-row" id="setSwitch_deviceId">
+        <label for="node-input-setSwitch_deviceId"><i class="fa fa-list"></i> <span data-i18n="HomeIotApi.parameters.deviceId"></span></label>
+
+        <input type="text" id="node-input-setSwitch_deviceId" placeholder="" style="width:70%">
+        <input type="hidden" id="node-input-setSwitch_deviceIdType">
+    </div>
+
+    <div class="form-row" id="setSwitch_value">
+        <label for="node-input-setSwitch_value"><i class="fa fa-list"></i> <span data-i18n="HomeIotApi.parameters.value"></span></label>
+        <select id="node-input-setSwitch_value">
+            <option value="true">true</option>
+            <option value="false">false</option>
+        </select>
+
+    </div>
+
+    <div class="form-row" id="setSwitchTimer_deviceId">
+        <label for="node-input-setSwitchTimer_deviceId"><i class="fa fa-list"></i> <span data-i18n="HomeIotApi.parameters.deviceId"></span></label>
+
+        <input type="text" id="node-input-setSwitchTimer_deviceId" placeholder="" style="width:70%">
+        <input type="hidden" id="node-input-setSwitchTimer_deviceIdType">
+    </div>
+
+    <div class="form-row" id="setSwitchTimer_value">
+        <label for="node-input-setSwitchTimer_value"><i class="fa fa-list"></i> <span data-i18n="HomeIotApi.parameters.value"></span></label>
+        <select id="node-input-setSwitchTimer_value">
+            <option value="true">true</option>
+            <option value="false">false</option>
+        </select>
+
+    </div>
+
+    <div class="form-row" id="setSwitchTimer_minutes">
+        <label for="node-input-setSwitchTimer_minutes"><i class="fa fa-list"></i> <span data-i18n="HomeIotApi.parameters.minutes"></span></label>
+
+        <input type="text" id="node-input-setSwitchTimer_minutes" placeholder="" style="width:70%">
+        <input type="hidden" id="node-input-setSwitchTimer_minutesType">
+    </div>
+
+    <div class="form-row" id="getForecast_days">
+        <label for="node-input-getForecast_days"><i class="fa fa-list"></i> <span data-i18n="HomeIotApi.parameters.days"></span></label>
+
+        <input type="text" id="node-input-getForecast_days" placeholder="" style="width:70%">
+        <input type="hidden" id="node-input-getForecast_daysType">
+    </div>
+
+    <div class="form-row" id="getZoneTemperature_zoneId">
+        <label for="node-input-getZoneTemperature_zoneId"><i class="fa fa-list"></i> <span data-i18n="HomeIotApi.parameters.zoneId"></span></label>
+
+        <input type="text" id="node-input-getZoneTemperature_zoneId" placeholder="" style="width:70%">
+        <input type="hidden" id="node-input-getZoneTemperature_zoneIdType">
+    </div>
+
+    <div class="form-row" id="getHeaterState_zoneId">
+        <label for="node-input-getHeaterState_zoneId"><i class="fa fa-list"></i> <span data-i18n="HomeIotApi.parameters.zoneId"></span></label>
+
+        <input type="text" id="node-input-getHeaterState_zoneId" placeholder="" style="width:70%">
+        <input type="hidden" id="node-input-getHeaterState_zoneIdType">
+    </div>
+
+    <div class="form-row" id="setHeaterState_zoneId">
+        <label for="node-input-setHeaterState_zoneId"><i class="fa fa-list"></i> <span data-i18n="HomeIotApi.parameters.zoneId"></span></label>
+
+        <input type="text" id="node-input-setHeaterState_zoneId" placeholder="" style="width:70%">
+        <input type="hidden" id="node-input-setHeaterState_zoneIdType">
+    </div>
+
+    <div class="form-row" id="setHeaterState_state">
+        <label for="node-input-setHeaterState_state"><i class="fa fa-list"></i> <span data-i18n="HomeIotApi.parameters.state"></span></label>
+        <select id="node-input-setHeaterState_state">
+            <option value="false">false</option>
+            <option value="true">true</option>
+        </select>
+
+    </div>
+
+    <div class="form-row" id="quietZone_zoneId">
+        <label for="node-input-quietZone_zoneId"><i class="fa fa-list"></i> <span data-i18n="HomeIotApi.parameters.zoneId"></span></label>
+        <select id="node-input-quietZone_zoneId">
+            <option value="basement">basement</option>
+            <option value="first-floor">first-floor</option>
+            <option value="second-floor">second-floor</option>
+        </select>
+
+    </div>
+
+    <hr/>
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> <span data-i18n="node-red:common.label.name"></span></label>
+        <input type="text" id="node-input-name" data-i18n="[placeholder]node-red:common.label.name">
+    </div>
+</script>
+
+<script type="text/html" data-help-name="home-iot-api">
+
+    <p>The API for the EatBacon IOT project</p>
+    <p><b>Methods</b></p>
+        <h3>GET /devices</h3>
+        <p>returns all registered devices</p>
+        <dl class="message-properties">
+        <dt>skip <span class="property-type">integer</span></dt>
+        <dt>limit <span class="property-type">integer</span></dt>
+        </dl>
+        <h3>POST /devices</h3>
+        <p></p>
+        <dl class="message-properties">
+        <dt>device <span class="property-type"></span></dt>
+        </dl>
+        <h3>POST /lighting/dimmers/{deviceId}/{value}</h3>
+        <p></p>
+        <dl class="message-properties">
+        <dt>deviceId <span class="property-type">string</span></dt>
+        <dt>value <span class="property-type">integer</span></dt>
+        </dl>
+        <h3>POST /lighting/dimmers/{deviceId}/{value}/timer/{timeunit}</h3>
+        <p>sets a dimmer to a specific value on a timer</p>
+        <dl class="message-properties">
+        <dt>deviceId <span class="property-type">string</span></dt>
+        <dt>value <span class="property-type">integer</span></dt>
+        <dt>timeunit <span class="property-type">integer</span></dt>
+        <dt>units <span class="property-type">string</span></dt>
+        </dl>
+        <h3>GET /lighting/switches/{deviceId}</h3>
+        <p></p>
+        <dl class="message-properties">
+        <dt>deviceId <span class="property-type">string</span></dt>
+        </dl>
+        <h3>POST /lighting/switches/{deviceId}/{value}</h3>
+        <p></p>
+        <dl class="message-properties">
+        <dt>deviceId <span class="property-type">string</span></dt>
+        <dt>value <span class="property-type">string</span></dt>
+        </dl>
+        <h3>POST /lighting/switches/{deviceId}/{value}/timer/{minutes}</h3>
+        <p>sets a switch to a specific value on a timer</p>
+        <dl class="message-properties">
+        <dt>deviceId <span class="property-type">string</span></dt>
+        <dt>value <span class="property-type">string</span></dt>
+        <dt>minutes <span class="property-type">integer</span></dt>
+        </dl>
+        <h3>GET /lightingSummary</h3>
+        <p></p>
+        <dl class="message-properties">
+        </dl>
+        <h3>GET /temperature</h3>
+        <p></p>
+        <dl class="message-properties">
+        </dl>
+        <h3>GET /temperature/forecast/{days}</h3>
+        <p></p>
+        <dl class="message-properties">
+        <dt>days <span class="property-type">integer</span></dt>
+        </dl>
+        <h3>GET /temperature/{zoneId}</h3>
+        <p></p>
+        <dl class="message-properties">
+        <dt>zoneId <span class="property-type">string</span></dt>
+        </dl>
+        <h3>GET /temperature/{zoneId}/heater</h3>
+        <p>gets the state of the heater</p>
+        <dl class="message-properties">
+        <dt>zoneId <span class="property-type">string</span></dt>
+        </dl>
+        <h3>POST /temperature/{zoneId}/heater/{state}</h3>
+        <p>turns the heater on or off</p>
+        <dl class="message-properties">
+        <dt>zoneId <span class="property-type">string</span></dt>
+        <dt>state <span class="property-type">string</span></dt>
+        </dl>
+        <h3>GET /zones</h3>
+        <p></p>
+        <dl class="message-properties">
+        </dl>
+        <h3>GET /zones/{zoneId}/quiet</h3>
+        <p></p>
+        <dl class="message-properties">
+        <dt>zoneId <span class="property-type">string</span></dt>
+        </dl>
+</script>
